@@ -1,0 +1,136 @@
+﻿@model IEnumerable<CourseChentsov.Models.Package>
+
+@{
+    ViewBag.Title = "IndexPartial";
+    Layout = null;
+}
+
+<table class="table" id="pageList" style="border-top: 3px solid blue; border-bottom: 3px solid blue;">
+    <tr>
+        <th>
+            @Html.CheckBox("CheckPackageAll")
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.NumberDelivery)
+        </th>
+        <th>
+            @Html.DisplayName("Адрес отправки")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.SenderName)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.DateSend)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateDelivery)
+        </th>
+        <th>
+            @Html.DisplayName("Адрес доставки")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Recipient.RecipientName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CountSeats)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Weight)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeliveryCost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatusPackage.StatusName)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr style="border-top: 1px solid green;">
+            <td>
+                @Html.CheckBox("CheckPackage" + item.Id, htmlAttributes: new { @onclick = "choisePackage();" })
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberDelivery)
+                @if (item.IsPrint)
+                {
+                    @Html.DisplayNameFor(model => model.IsPrint)
+                }
+                <br />
+                @if (item.InRegister)
+                {
+                    @Html.DisplayNameFor(model => model.InRegister)
+                    <br />
+                    @Html.Label(" №")
+                    @Html.ActionLink($"{item.DispatchRegisterId}", "Details", "DispatchRegisters", new { id = item.DispatchRegisterId }, null)
+                }
+            </td>
+            <td>
+                <ul style="list-style:none; padding:0px">
+                    <li>@item.DepartmentSend.City.Name</li>
+                    <li>@item.DepartmentSendId</li>
+                    <li>@item.DepartmentSend.Adress</li>
+                </ul>
+            </td>
+
+            <td>
+                <ul style="list-style:none; padding:0px">
+                    <li>@item.User.SenderName</li>
+                    <li>@item.User.LastName @item.User.FirstName @item.User.ThirdName</li>
+                    <li>@item.User.PhoneNumber</li>
+                </ul>
+            </td>
+
+            <td>
+                @item.DateSend.Date.ToShortDateString()
+            </td>
+            <td>
+                @item.DateDelivery.Date.ToShortDateString()
+            </td>
+            <td>
+                <ul style="list-style:none; padding:0px">
+                    <li>@item.DepartmentRecipient.City.Name</li>
+                    <li>@item.DepartmentRecipientId</li>
+                    <li>@item.DepartmentRecipient.Adress</li>
+                </ul>
+            </td>
+            <td>
+                <ul style="list-style:none; padding:0px">
+                    <li>@item.Recipient.RecipientName</li>
+                    <li>@item.Recipient.LastName @item.Recipient.FirstName @item.Recipient.ThirdName</li>
+                    <li>@item.Recipient.PhoneNumber</li>
+                </ul>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CountSeats)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveryCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusPackage.StatusName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }, htmlAttributes: new { @class = "edits" }) <br />
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, htmlAttributes: new { @class = "deletes" })
+            </td>
+        </tr>
+    }
+
+</table>

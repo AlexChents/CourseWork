@@ -1,0 +1,44 @@
+﻿@model IEnumerable<CourseChentsov.Models.BasicPriceDaysDelivery>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h3>Сроки и стоимость доставки</h3>
+
+<p>
+    @Html.ActionLink("Добавить новый", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BasicPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PriceForKg)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CountDays)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BasicPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PriceForKg)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CountDays)
+        </td>
+        <td>
+            @Html.ActionLink("Редактировать", "Edit", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+<p>@Html.ActionLink("Навигация по сайту", "Navigation", "Home")</p>

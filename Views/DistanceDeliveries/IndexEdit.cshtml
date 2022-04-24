@@ -1,0 +1,40 @@
+﻿@model IEnumerable<CourseChentsov.Models.DistanceDelivery>
+
+@{
+    ViewBag.Title = "IndexP";
+}
+
+<h3>Список тарифных зон для редактирования</h3>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.RegionFirst.RegionName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RegionSecond.RegionName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BasicPriceDaysDeliveryId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.RegionFirst.RegionName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RegionSecond.RegionName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BasicPriceDaysDeliveryId)
+        </td>
+        <td>
+            @Html.ActionLink("Редактировать", "Edit", new { id = item.Id })
+        </td>
+    </tr>
+}
+
+</table>

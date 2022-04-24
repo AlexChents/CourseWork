@@ -1,0 +1,64 @@
+﻿@model IEnumerable<CourseChentsov.Models.Department>
+@{
+    Layout = null;
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Adress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedule)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaxWeight)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.City.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Adress)
+        </td>
+        <td>
+            @if (item.StatusDepartmentId == 1)
+            {
+                <ul style="padding: 0">
+                    <li style="list-style-type:none">@item.Schedule.WeekdaysWork @item.Schedule.WeekdaysTimeWork</li>
+                    <li style="list-style-type:none">@item.Schedule.SaturdayWork @item.Schedule.SaturdayTimeWork</li>
+                    <li style="list-style-type:none">@item.Schedule.SundayWork @item.Schedule.SundayTimeWork</li>
+                </ul>
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.StatusDepartment.StatusName)
+            }
+        <td>
+            @Html.DisplayFor(modelItem => item.MaxWeight)
+        </td>
+        @if (User.IsInRole("admin"))
+        {
+            <td>
+                @Html.ActionLink("Редактировать", "Edit", new { id = item.Id })
+            </td>
+        }
+    </tr>
+    }
+
+</table>
+

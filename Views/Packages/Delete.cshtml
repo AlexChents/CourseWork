@@ -1,0 +1,129 @@
+﻿@model CourseChentsov.Models.Package
+
+@{
+    Layout = null;
+}
+<body style="background-color:whitesmoke">
+</body>
+<div class='modal-content'>
+    <div class='modal-header'>
+        <button class='close' data-dismiss='modal' area-hidden='true'>X</button>
+        <h2>Удаление</h2>
+    </div>
+    <div class='modal-body'>
+        <h3>Вы уверены, что желаете удалить декларацию №@Model.NumberDelivery ?</h3>
+        <p>Удаление декларации приведет к удалению ее из реестра</p>
+        <div>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.NumberDelivery)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.NumberDelivery)
+                </dd>
+
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.DepartmentRecipient.City.Name)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.DepartmentRecipient.City.Name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.DepartmentRecipientId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.DepartmentRecipientId)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Recipient.RecipientName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Recipient.RecipientName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.User.SenderName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.User.SenderName)
+                </dd>
+
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Weight)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Weight)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.CountSeats)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.CountSeats)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.DateSend)
+                </dt>
+
+                <dd>
+                    @Model.DateSend.ToShortDateString()
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.DateDelivery)
+                </dt>
+
+                <dd>
+                    @Model.DateDelivery.ToShortDateString()
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.DeliveryCost)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.DeliveryCost)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Comment)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Comment)
+                </dd>
+
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Удалить" class="btn btn-default" />
+                </div>
+            }
+        </div>
+    </div>
+</div>

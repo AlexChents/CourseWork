@@ -1,0 +1,53 @@
+﻿@model CourseChentsov.Models.ViewModel.ViewFindPackage
+
+@{
+    ViewBag.Title = "Create";
+}
+<body style="background: no-repeat right url(/Content/Images/delivery.jpg); background-size: 700px">
+</body>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Отследить посылку</h4>
+        <hr style="width:42%;text-align:left;margin-left:0">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.NumberDelarationId, "Введите № декларации", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("NumberDelarationId", null, htmlAttributes: new { @class = "form-control", @type = "number" })
+                @Html.ValidationMessageFor(model => model.NumberDelarationId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" id="btnData" value="Найти" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div id="dataInfo">
+</div>
+
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnData').click(function () {
+                var numberDelaration = decodeURI($('#NumberDelarationId').val());
+                $.ajax({
+                    url: "/ViewFindPackages/DataInfo?Id=" + numberDelaration,
+                    success: function (data) {
+                        $("#dataInfo").html(data);
+                    }
+                });
+            });
+        });
+    </script>
+}
+

@@ -1,0 +1,147 @@
+﻿@model IEnumerable<CourseChentsov.Models.Package>
+
+@{
+    ViewBag.Title = "ViewPackageOnDepartment";
+}
+<body style="background-color:whitesmoke">
+</body>
+<h3>Входящие. Отд. №@ViewBag.IdDep</h3>
+<p>@Html.ActionLink("Исходящие посылки", "ViewPackageToSend", "Packages")</p>
+<table class="table" id="pageList" style="border-top: 3px solid blue; border-bottom: 3px solid blue;">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NumberDelivery)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatusPackage.StatusName)
+        </th>
+        <th>
+            @Html.DisplayName("Адрес отправки")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Recipient.RecipientName)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.CountSeats)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Weight)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeliveryCost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.SenderName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateSend)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateDelivery)
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr style="border-top: 1px solid green;">
+
+        <td>
+            @Html.DisplayFor(modelItem => item.NumberDelivery)
+            <br />
+            @if (item.InRegister)
+            {
+                @Html.DisplayNameFor(model => model.InRegister)
+                <br />
+                @Html.Label(" №")
+                @Html.ActionLink($"{item.DispatchRegisterId}", "Details", "DispatchRegisters", new { id = item.DispatchRegisterId }, null)
+            }
+        </td>
+
+        @if (item.StatusPackageId == 5)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusPackage.StatusName)
+            </td>
+        }
+        else
+        {
+            if (item.StatusPackageId == 4)
+            {
+                <td>
+                    @Html.DropDownList("StatusName", ViewBag.StatusPackageInDep as SelectList, htmlAttributes: new { @class = "form-control", @id = $"sn{item.Id}" })
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.DropDownList("StatusName", ViewBag.StatusPackagetoDep as SelectList, htmlAttributes: new { @class = "form-control", @id = $"sn{item.Id}" })
+                </td>
+            }
+        }
+        <td>
+            <ul style="list-style:none; padding:0px">
+                <li>@item.DepartmentSend.City.Name</li>
+                <li>@item.DepartmentSendId</li>
+                <li>@item.DepartmentSend.Adress</li>
+            </ul>
+        </td>
+        <td>
+            <ul style="list-style:none; padding:0px">
+                <li>@item.Recipient.RecipientName</li>
+                <li>@item.Recipient.LastName @item.Recipient.FirstName @item.Recipient.ThirdName</li>
+                <li>@item.Recipient.PhoneNumber</li>
+            </ul>
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.CountSeats)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Weight)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeliveryCost)
+        </td>
+        <td>
+            <ul style="list-style:none; padding:0px">
+                <li>@item.User.SenderName</li>
+                <li>@item.User.LastName @item.User.FirstName @item.User.ThirdName</li>
+                <li>@item.User.PhoneNumber</li>
+            </ul>
+        </td>
+
+        <td>
+            @item.DateSend.Date.ToShortDateString()
+        </td>
+        <td>
+            @item.DateDelivery.Date.ToShortDateString()
+        </td>
+
+    </tr>
+    }
+
+</table>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('select').each(function () {
+                $(this).change(function () {
+                    var idPac = (this.id).slice(2);
+                    var idStatus = decodeURI($(this).val());
+                    if (idStatus == 5) {
+                        $(this).attr('disabled', 'disabled');
+                    }
+                    $.ajax({
+                        url: "/Packages/ChangeStatus?id=" + (+idPac) + "&idStatus=" + (+idStatus),
+                        success: function () { }
+                    });
+                });
+            });
+        });
+    </script>
+}

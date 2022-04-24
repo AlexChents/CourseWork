@@ -1,0 +1,104 @@
+﻿@model CourseChentsov.Models.ViewModel.ViewCostDayDelivery
+
+@{
+    ViewBag.Title = "Index";
+}
+<body style="background: no-repeat right url(/Content/Images/dp.jpg); background-position-y:140px; background-position-x:700px; background-size: 600px"></body>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Калькулятор стоимости и даты доставки</h4>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.RegionSendId, "Область отправки", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("RegionSendId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RegionSendId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CitySendId, "Город отправки", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CitySendId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CitySendId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RegionRecipientId, "Область доставки", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("RegionRecipientId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RegionRecipientId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CityRecipientId, "Город доставки", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CityRecipientId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CityRecipientId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Weight, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" value="Рассчитать" id="btnCost" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div id="dataCostDayDelivery">
+</div>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#RegionSendId').change(function () {
+                var region = decodeURI($('#RegionSendId').val());
+                $.ajax({
+                    url: "/Departments/PartialIndexRegion?regionId=" + region,
+                    success: function (data) {
+                        $("#CitySendId").html(data);
+                    }
+                });
+            });
+            
+            $('#RegionRecipientId').change(function () {
+                var region = decodeURI($('#RegionRecipientId').val());
+                $.ajax({
+                    url: "/Departments/PartialIndexRegion?regionId=" + region,
+                    success: function (data) {
+                        $("#CityRecipientId").html(data);
+                    }
+                });
+            });
+
+            $('#btnCost').click(function () {
+                var regionSend = decodeURI($('#RegionSendId').val());
+                var regionRecipient = decodeURI($('#RegionRecipientId').val());
+                var weight = decodeURI($('#Weight').val());
+                $.ajax({
+                    url: "/ViewCostDayDeliveries/GetCostDayDelivery?regionSendId=" + regionSend + "&regionRecepientId=" + regionRecipient + "&weight=" + weight,
+                    success: function (data) {
+                        $("#dataCostDayDelivery").html(data);
+                    }
+                });
+            });
+        });
+    </script>
+}
+

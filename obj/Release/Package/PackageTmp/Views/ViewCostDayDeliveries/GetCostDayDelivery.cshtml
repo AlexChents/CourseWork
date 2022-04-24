@@ -1,0 +1,22 @@
+﻿@{
+    Layout = null;
+}
+<div id="dataCostDayDelivery">
+    <div class="form-horizontal">
+        <h4>Стоимость и срок доставки</h4>
+
+        <div class="form-group">
+            @Html.Label("Стоимость доставки", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <label class = "form-control" style="width:100px">@ViewBag.Cost</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Срок доставки", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <label class = "form-control" style="width:100px">@ViewBag.Date</label>
+            </div>
+        </div>
+    </div>
+</div>

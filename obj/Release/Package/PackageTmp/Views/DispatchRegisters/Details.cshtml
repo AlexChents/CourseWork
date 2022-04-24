@@ -1,0 +1,175 @@
+﻿@model IEnumerable<CourseChentsov.Models.Package>
+
+@{
+    ViewBag.Title = "Details";
+    double weightAll = 0;
+    int countSeats = 0;
+    double costDelivery = 0;
+
+}
+<body style="background-color:whitesmoke">
+</body>
+
+<h2>Подробно</h2>
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+
+<div>
+    <h4>Реестр №@ViewBag.NumberId от @ViewBag.DateRegister</h4>
+    <br/>
+    @Html.ActionLink("Распечатать", "PrintRegister", "Print", new { id = ViewBag.NumberId }, null)
+    <hr style="background-color:darkslateblue; height:1px" />
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberDelivery)
+            </th>
+            <th>
+                @Html.DisplayName("Адрес отправки")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.SenderName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.DateSend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateDelivery)
+            </th>
+            <th>
+                @Html.DisplayName("Адрес доставки")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recipient.RecipientName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountSeats)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryCost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.NumberDelivery
+                </td>
+                <td>
+                    <ul style="list-style:none; padding:0px">
+                        <li>@item.DepartmentSend.City.Name</li>
+                        <li>@item.DepartmentSendId</li>
+                        <li>@item.DepartmentSend.Adress</li>
+                    </ul>
+                </td>
+
+                <td>
+                    <ul style="list-style:none; padding:0px">
+                        <li>@item.User.SenderName</li>
+                        <li>@item.User.LastName @item.User.FirstName @item.User.ThirdName</li>
+                        <li>@item.User.PhoneNumber</li>
+                    </ul>
+                </td>
+
+                <td>
+                    @item.DateSend.Date.ToShortDateString()
+                </td>
+                <td>
+                    @item.DateDelivery.Date.ToShortDateString()
+                </td>
+                <td>
+                    <ul style="list-style:none; padding:0px">
+                        <li>@item.DepartmentRecipient.City.Name</li>
+                        <li>@item.DepartmentRecipientId</li>
+                        <li>@item.DepartmentRecipient.Adress</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul style="list-style:none; padding:0px">
+                        <li>@item.Recipient.RecipientName</li>
+                        <li>@item.Recipient.LastName @item.Recipient.FirstName @item.Recipient.ThirdName</li>
+                        <li>@item.Recipient.PhoneNumber</li>
+                    </ul>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountSeats)
+                    @{countSeats += item.CountSeats;
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Weight)
+                    @{weightAll += item.Weight;
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryCost)
+                    @{costDelivery += item.DeliveryCost;
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    @if (item.DispatchRegister.IsPrint)
+                    {
+                        @Html.ActionLink("Удалить из реестра", "DeletePackageFromRegister", new { id = item.Id }, htmlAttributes: new { @class = "deletePackageFromRegister" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Удалить из реестра", "DeletePackageFromRegister", new { id = item.Id })
+                    }
+                </td>
+
+            </tr>
+        }
+        <tr>
+            <td>
+                <h4>ИТОГО: </h4>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+
+            <td>@countSeats</td>
+            <td>@weightAll</td>
+            <td>@costDelivery</td>
+
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+</div>
+<p>
+    @Html.ActionLink("Вернуться к списку реестров", "Index") |
+    @Html.ActionLink("Вернуться к списку деклараций", "Index", "Packages", null, null)
+</p>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".deletePackageFromRegister").click(function (e) {
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,308 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<CourseChentsov.Models.Package>
+
+@{
+    ViewBag.Title = "Список деклараций";
+ //   Layout = "~/Views/Shared/_LayoutPackages.cshtml";
+}
+<body style="background-color:whitesmoke"></body>
+<div style="margin-left:-40px">
+    <h3>Список деклараций @User.Identity.GetUserName()</h3>
+    <div id="modDialog" class="modal fade">
+        <div id="dialogContent" class="modal-dialog" style="width:1200px"></div>
+    </div>
+    <p>
+        @Html.ActionLink("Создать новый документ", "Create", null, htmlAttributes: new { @class = "creates" })
+        <span>&nbsp;</span>@Html.ActionLink("Список реестров", "Index", "DispatchRegisters")
+        <span>&nbsp;</span><button id="printPackages" hidden="hidden">Распечатать декларации</button>
+        <span>&nbsp;</span><button id="addToRegister" hidden="hidden">Добавить в реестр</button>
+    </p>
+    <p style="display:inline-flex">
+        <label style="width:320px">Установить дату с: </label> <span>&nbsp;</span>
+        <input id="DateFilterFrom" class="form-control" type="date" value="@ViewBag.dateTimeFrom" /><span>&nbsp;</span>
+        <label style="width:70px">По: </label> <span>&nbsp;</span>
+        <input id="DateFilterTo" class="form-control" type="date" value="@ViewBag.dateTimeTo" /><span>&nbsp;</span>
+
+    </p>
+    <table class="table" id="pageList" style="border-top: 3px solid blue; border-bottom: 3px solid blue;">
+        <tr>
+            <th>
+                @Html.CheckBox("CheckPackageAll")
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.NumberDelivery)
+            </th>
+            <th>
+                @Html.DisplayName("Адрес отправки")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.SenderName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.DateSend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateDelivery)
+            </th>
+            <th>
+                @Html.DisplayName("Адрес доставки")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recipient.RecipientName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountSeats)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryCost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StatusPackage.StatusName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr style="border-top: 1px solid green;">
+                <td>
+                    @Html.CheckBox("CheckPackage" + item.Id, htmlAttributes: new { @onclick = "choisePackage();" })
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberDelivery)
+                    @if (item.IsPrint)
+                    {
+                        @Html.DisplayNameFor(model => model.IsPrint)
+                    }
+                    <br />
+                    @if (item.InRegister)
+                    {
+                        @Html.DisplayNameFor(model => model.InRegister)
+                        <br />
+                        @Html.Label(" №")
+                        @Html.ActionLink($"{item.DispatchRegisterId}", "Details", "DispatchRegisters", new { id = item.DispatchRegisterId }, null)
+                    }
+                </td>
+                <td>
+                    <ul style="list-style:none; padding:0px">
+                        <li>@item.DepartmentSend.City.Name</li>
+                        <li>@item.DepartmentSendId</li>
+                        <li>@item.DepartmentSend.Adress</li>
+                    </ul>
+                </td>
+
+                <td>
+                    <ul style="list-style:none; padding:0px">
+                        <li>@item.User.SenderName</li>
+                        <li>@item.User.LastName @item.User.FirstName @item.User.ThirdName</li>
+                        <li>@item.User.PhoneNumber</li>
+                    </ul>
+                </td>
+
+                <td>
+                    @item.DateSend.Date.ToShortDateString()
+                </td>
+                <td>
+                    @item.DateDelivery.Date.ToShortDateString()
+                </td>
+                <td>
+                    <ul style="list-style:none; padding:0px">
+                        <li>@item.DepartmentRecipient.City.Name</li>
+                        <li>@item.DepartmentRecipientId</li>
+                        <li>@item.DepartmentRecipient.Adress</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul style="list-style:none; padding:0px">
+                        <li>@item.Recipient.RecipientName</li>
+                        <li>@item.Recipient.LastName @item.Recipient.FirstName @item.Recipient.ThirdName</li>
+                        <li>@item.Recipient.PhoneNumber</li>
+                    </ul>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountSeats)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Weight)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryCost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusPackage.StatusName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }, htmlAttributes: new { @class = "edits" }) <br />
+                    @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, htmlAttributes: new { @class = "deletes" })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#DateFilterFrom').change(false, changeDateTime);
+            $('#DateFilterTo').change(false, changeDateTime);
+            $('#CheckPackageAll').change(function () {
+                if (this.checked) {
+                    $('input:checkbox').prop('checked', true);
+                    $('input:checkbox').attr('checked', 'checked');
+                    if ($('input:checkbox').length != 1) {
+                        $('#printPackages').removeAttr('hidden');
+                        $('#addToRegister').removeAttr('hidden');
+                    }
+                }
+                else {
+                    $('input:checkbox').prop('checked', false);
+                    $('#printPackages').attr('hidden', 'hidden');
+                    $('#addToRegister').attr('hidden', 'hidden');
+                    $('input:checkbox').removeAttr('checked');
+                }
+            });
+
+            $('#printPackages').click(function () {
+                var arrayId = [];
+                $('input[type=checkbox]').each(function () {
+                    if ($(this).prop('checked')) {
+                        if (this.id != "CheckPackageAll") {
+                            var id = this.id.slice(12);
+                            //alert(id);
+                            arrayId.push(id);
+                            //alert(location.host);
+                        }
+                    }
+                });
+                window.open('/Print/PrintDeclarations?arrayDeclaration=' + arrayId);
+                setTimeout(function () { window.location.reload(); }, 400);
+            });
+
+            $('#addToRegister').click(function () {
+                var arrayId = [];
+                $('input[type=checkbox]').each(function () {
+                    if ($(this).prop('checked')) {
+                        if (this.id != "CheckPackageAll") {
+                            var id = this.id.slice(12);
+                            arrayId.push(id);
+                            //alert(location.host);
+                        }
+                    }
+                });
+                $.ajax({
+                    url: "/Packages/AddDeclarationsToRegister?arrayDeclaration=" + arrayId,
+                    success: function (data) {
+                        if (data != 0) {
+                            alert("Посылки добавлены в реестр №" + data);
+                        }
+                        else
+                            alert("Данные декларации уже добавлены в реестр");
+                    }
+                });
+                setTimeout(function () { window.location.reload(); }, 400);
+            });
+
+        });
+
+        function choisePackage() {
+            var bool = false;
+            $('input[type=checkbox]').each(function () {
+                if ($(this).prop('checked')) {
+                    $(this).attr('checked', 'checked');
+                    $('#printPackages').removeAttr('hidden');
+                    $('#addToRegister').removeAttr('hidden');
+
+                    bool = true;
+                }
+                else {
+                    $('#' + this.id + '').removeAttr('checked');
+                }
+            });
+            if (!bool) {
+                $('#printPackages').attr('hidden', 'hidden');
+                $('#addToRegister').attr('hidden', 'hidden');
+            }
+        }
+
+        function changeDateTime() {
+            $('input:checkbox').prop('checked', false);
+            $('#printPackages').attr('hidden', 'hidden');
+            $('#addToRegister').attr('hidden', 'hidden');
+            $('input:checkbox').removeAttr('checked');
+            var dateTimeFrom = $('#DateFilterFrom').val();
+            var dateTimeTo = $('#DateFilterTo').val();
+            if (dateTimeFrom != "" && dateTimeTo != "") {
+                $.ajax({
+                    url: '/Packages/IndexPartial?dateTimeFrom=' + dateTimeFrom + '&dateTimeTo=' + dateTimeTo,
+                    success: function (data) {
+                        $('#pageList').html(data);
+                    }
+                });
+            }
+            else if (dateTimeFrom == "" && dateTimeTo == "") {
+                var date = new Date();
+                var newdate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+                $.ajax({
+                    url: '/Packages/IndexPartial?dateTimeFrom=' + newdate + '&dateTimeTo=' + newdate,
+                    success: function (data) {
+                        $('#pageList').html(data);
+                    }
+                });
+            }
+        }
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".edits").click(function (e) {
+
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+        });
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".deletes").click(function (e) {
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+        });
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".creates").click(function (e) {
+
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+        });
+
+    </script>
+}   

@@ -1,0 +1,97 @@
+﻿@model IEnumerable<CourseChentsov.Models.News>
+
+@{
+    ViewBag.Title = "Index";
+}
+<body style="background:url(/Content/Images/transport.jpg); background-size:100%; background-attachment:fixed">
+</body>
+<div class="jumbotron text-center back-fon" style="padding:0 0 1px 0;">
+    <h1 style="font-family:Arial Black">Delivery Service</h1>
+    <p>Новый сервис доставки</p>
+</div>
+<div class="container col-sm-12" style="margin-top:20px;color:black;">
+    <div class="row">
+        <div class="col-sm-3 back-fon">
+            <h2>Доставка</h2>
+            <hr style="background-color:darkblue; height:2px;">
+            <br />
+            <div class="fakeimg"><img src="~/Content/Images/package.jpeg" alt="img_package" width="250" style="opacity: 1" /></div>
+            <br />
+            <p>Получайте посылку всегда во время</p>
+            <hr style="background-color:darkblue; height:2px;">
+            <h3>Информация</h3>
+            <hr style="background-color:darkblue; height:1px;">
+            <ul class="nav nav-pills flex-column">
+                <li>@Html.ActionLink("Наши отделения", "Index", "Departments", null, new { @class = "nav-item nav-link" })</li>
+                <li>@Html.ActionLink("Стоимость и срок доставки", "Index", "DistanceDeliveries", null, new { @class = "nav-item nav-link" })</li>
+                <li>@Html.ActionLink("Калькулятор стоимости", "Index", "ViewCostDayDeliveries", null, new { @class = "nav-item nav-link" })</li>
+                <li>@Html.ActionLink("Отследить посылку", "Index", "ViewFindPackages", null, new { @class = "nav-item nav-link" })</li>
+            </ul>
+            <hr style="background-color:darkblue; height:1px;">
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-8 back-fon">
+            <div>
+                <h2>О нас</h2>
+                <p>
+                    Lorem ipsum – псевдо-латинский текст, который используется для веб дизайна, типографии, оборудования, и распечатки вместо английского текста для того, чтобы сделать ударение не на содержание, а на элементы дизайна. Такой текст также называется как заполнитель. Это очень удобный инструмент для моделей (макетов). Он помогает выделить визуальные элементы в документе или презентации, например текст, шрифт или разметка. Lorem ipsum по большей части является элементом латинского текста классического автора и философа Цицерона. Слова и буквы были заменены добавлением или сокращением элементов, поэтому будет совсем неразумно пытаться передать содержание; это не гениально, не правильно, используется даже не понятный латинский. Хотя Lorem ipsum напоминает классический латинский, вы не найдете никакого смысла в сказанном. Поскольку текст Цицерона не содержит буквы K, W, или Z, что чуждо для латинского, эти буквы, а также многие другие часто вставлены в случайном порядке, чтобы скопировать тексты различных Европейских языков, поскольку диграфы не встречаются в оригинальных текстах.
+                    В профессиональной сфере часто случается так, что личные или корпоративные клиенты заказывают, чтобы публикация была сделана и представлена еще тогда, когда фактическое содержание все еще не готово. 
+                </p>
+                <hr style="background-color:darkblue; height:2px;">
+            </div>
+            <div>
+                <h2>Новости</h2>
+                @foreach (var item in Model)
+                {
+                    <p>
+                        @item.Title
+                    </p>
+
+                    <p>
+                        @item.DateCreate.ToShortDateString()
+                    </p>
+                }
+                @Html.ActionLink("К другим новостям", "Index", "News", null, new { @class = "nav-item nav-link" })
+                <hr style="background-color:darkblue; height:1px;">
+            </div>
+        </div>
+    </div>
+<br/>
+    <div class="row">
+        <div class="col-sm-6 back-fon text-center">
+            <h3>Бизнес-клентам</h3>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    Использование услуг доставки товаров в отделения по специальным тарифам 
+                </li>      
+                <li class="list-group-item">
+                    Автоматический возврат товара после 5 рабочих дней хранения
+                </li>
+                
+                <li class="list-group-item">
+                    Возможность автоматизации процессов оформления и контроля отравки с помощью личного кабинета
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-6 back-fon text-center">
+            <h3>Частным клиентам</h3>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    Возможность самостоятельно оформить посылку
+                </li>
+                <li class="list-group-item">
+                    Возмость отслеживать статус посылки в любое время
+                </li>
+                <li class="list-group-item">
+                    Гарантируемая доставка - наш долг доставить во время
+                </li>
+                <li class="list-group-item">
+                    Услуга хранения до 30 дней после прибытия на отделение
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<br />

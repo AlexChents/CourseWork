@@ -1,0 +1,284 @@
+﻿@model CourseChentsov.Models.ViewModel.ViewPackage
+
+@{
+    Layout = "~/Views/Shared/_LayoutModalWindow.cshtml";
+}
+<body style="background-color:whitesmoke">
+</body>
+<div class='modal-content' style="width:1200px; margin-top:-30px;">
+    <div class='modal-header'>
+
+        <button class='close' data-dismiss='modal' area-hidden='true'>X</button>
+        <h4 style="font-weight:bolder">Редактирование документа №@(10000000000 + Model.Id)</h4>
+    </div>
+    <div class='modal-body'>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-horizontal" style="font-size:13px">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div style="display:inline-flex">
+                <div class="sender" style="margin-top:1px">
+                    @Html.Label("Данные отправителя")
+                    <br />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SenderName, "Отправитель", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.SenderName, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.SenderName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("ФИО", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div style="display:inline-flex">
+                                @Html.TextBoxFor(model => model.LastNameSender, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.LastNameSender, "", new { @class = "text-danger" })
+                                <span>&nbsp;&nbsp;&nbsp;</span>
+                                @Html.TextBoxFor(model => model.FirstNameSender, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.FirstNameSender, "", new { @class = "text-danger" })
+                                <span>&nbsp;&nbsp;&nbsp;</span>
+                                @Html.TextBoxFor(model => model.ThirdNameSender, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ThirdNameSender, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NumberPhoneSender, "Номер телефона", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.NumberPhoneSender, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.NumberPhoneSender, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RegionSender, "Область", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("RegionSender", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.RegionSender, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CitySender, "Город", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("CitySender", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CitySender, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DepartmentIdSender, "Номер отделения", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("DepartmentIdSender", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.DepartmentIdSender, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sender" style="margin-top:1px">
+                    @Html.Label("Данные получателя")
+                    <br />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RecipientName, "Получатель", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.RecipientName, htmlAttributes: new { @class = "form-control", id = "Recipient" })
+                            @Html.ValidationMessageFor(model => model.RecipientName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("ФИО", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div style="display:inline-flex">
+                                @Html.TextBoxFor(model => model.LastNameRecipient, htmlAttributes: new { @class = "form-control" })
+                                <br />
+                                @Html.ValidationMessageFor(model => model.LastNameRecipient, "", new { @class = "text-danger" })
+                                <span>&nbsp;&nbsp;&nbsp;</span>
+                                <br />
+                                @Html.TextBoxFor(model => model.FirstNameRecipient, htmlAttributes: new { @class = "form-control" })
+                                <br />
+                                @Html.ValidationMessageFor(model => model.FirstNameRecipient, "", new { @class = "text-danger" })
+                                <span>&nbsp;&nbsp;&nbsp;</span>
+                                @Html.TextBoxFor(model => model.ThirdNameRecipient, htmlAttributes: new { @class = "form-control" })
+                                <br />
+                                @Html.ValidationMessageFor(model => model.ThirdNameRecipient, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NumberPhoneRecipient, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.NumberPhoneRecipient, new { htmlAttributes = new { @class = "form-control", @placeholder = "0671234567" } })
+                            @Html.ValidationMessageFor(model => model.NumberPhoneRecipient, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RegionRecipient, "Область", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("RegionRecipient", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.RegionRecipient, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CityRecipient, "Город", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("CityRecipient", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CityRecipient, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DepartmentIdRecipient, "Номер отделения", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("DepartmentIdRecipient", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.DepartmentIdRecipient, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sender" style="margin-top:1px">
+                <div style="display:inline-flex">
+                    <div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Weight, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CountSeats, htmlAttributes: new { @class = "control-label col-md-5" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CountSeats, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CountSeats, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Comment, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.Comment, 4, 25, new { @class = "form-control", @maxlength = 100, style = "margin: 0px; max-width: 280px; max-height: 100px; min-width: 280px; min-height: 100px;" })
+                                @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-5">
+                    <input type="submit" value="Сохранить" class="btn btn-primary" style="width:200px"/>
+                </div>
+            </div>
+        </div>
+        
+            }
+
+        </div>
+</div>
+
+        @section scripts{
+            @Scripts.Render("~/bundles/jqueryval")
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#RegionSender').change(function () {
+                        var region = decodeURI($('#RegionSender').val());
+                        $.ajax({
+                            url: "/Departments/PartialIndexRegion?regionId=" + region,
+                            success: function (data) {
+                                $("#CitySender").html(data);
+                                $('#CitySender').html(function () {
+                                    var cityName = decodeURI($('#CitySender').val());
+                                    $.ajax({
+                                        url: "/Departments/IdDepartments?cityId=" + cityName,
+                                        success: function (data) {
+                                            $("#DepartmentIdSender").html(data);
+                                            changeWeight();
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    });
+                    $('#CitySender').change(function () {
+                        var cityName = decodeURI($('#CitySender').val());
+                        $.ajax({
+                            url: "/Departments/IdDepartments?cityId=" + cityName,
+                            success: function (data) {
+                                $("#DepartmentIdSender").html(data);
+                                changeWeight();
+                            }
+                        });
+                    });
+
+                    $('#RegionRecipient').change(function () {
+                        var region = decodeURI($('#RegionRecipient').val());
+                        $.ajax({
+                            url: "/Departments/PartialIndexRegion?regionId=" + region,
+                            success: function (data) {
+                                $("#CityRecipient").html(data);
+                                $('#CityRecipient').html(function () {
+                                    var cityName = decodeURI($('#CityRecipient').val());
+                                    $.ajax({
+                                        url: "/Departments/IdDepartments?cityId=" + cityName,
+                                        success: function (data) {
+                                            $("#DepartmentIdRecipient").html(data);
+                                            changeWeight();
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    });
+                    $('#CityRecipient').change(function () {
+                        var cityName = decodeURI($('#CityRecipient').val());
+                        $.ajax({
+                            url: "/Departments/IdDepartments?cityId=" + cityName,
+                            success: function (data) {
+                                $("#DepartmentIdRecipient").html(data);
+                                changeWeight();
+                            }
+                        });
+                    });
+                    $('#DepartmentIdSender').change(true, changeWeight);
+                    $('#DepartmentIdRecipient').change(true, changeWeight);
+                    $('#Weight').change(true, changeWeight);
+                    function changeWeight() {
+                        var idDepSend = $('#DepartmentIdSender').val();
+                        var idDepRec = $('#DepartmentIdRecipient').val();
+                        idDepSend = idDepSend.substr(0, idDepSend.indexOf(","));
+                        idDepRec = idDepRec.substr(0, idDepRec.indexOf(","));
+                        $.ajax({
+                            url: "/Departments/GetMaxWeight?firstDep=" + idDepSend + "&secondDep=" + idDepRec,
+                            success: function (data) {
+                                var f = +data;
+                                var s = +$('#Weight').val();
+                                if (f < s) {
+                                    $('#Weight').val('Превышен максимальный вес в ' + data + ' кг.!');
+                                }
+                            }
+                        });
+                    }
+                });
+            </script>
+        }

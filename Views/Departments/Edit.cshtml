@@ -1,0 +1,105 @@
+﻿@model CourseChentsov.Models.ViewModel.ViewDepartment
+
+@{
+    ViewBag.Title = "Редактировать";
+}
+        <h2>Редактировать</h2>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                <h4>Отделение №@ViewBag.id</h4>
+
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.Label("Область", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("Region", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("City", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Adress, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Adress, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Adress, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MaxWeight, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.MaxWeight, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MaxWeight, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StatusDepartment, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("StatusDepartment", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.StatusDepartment, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.WeekdaysWork, "График работы", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div style="display:inline-flex">
+                            <div>
+                                @Html.TextBoxFor(model => model.WeekdaysWork, htmlAttributes: new { @class = "form-control", @readonly = "readonly", @Value = "Пн-Пт" })
+                                @Html.TextBoxFor(model => model.SaturdayWork, htmlAttributes: new { @class = "form-control", @readonly = "readonly", @Value = "Сб" })
+                                @Html.TextBoxFor(model => model.SundayWork, htmlAttributes: new { @class = "form-control", @readonly = "readonly", @Value = "Вс" })
+                            </div>
+                            <div>
+                                @Html.DropDownList("WeekdaysTimeWork", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.DropDownList("SaturdayTimeWork", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.DropDownList("SundayTimeWork", null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.WeekdaysWork, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Сохранить" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    var region = decodeURI($('#Region').val());
+                    $('#Region').change(function () {
+                        if ($('#Region').val() != "") {
+                            $('#City').attr('disabled', false);
+                            region = decodeURI($('#Region').val());
+                            $.ajax({
+                                url: "/Departments/PartialIndexRegion?regionId=" + region,
+                                success: function (data) {
+                                    $("#City").html(data);
+                                }
+                            });
+                        }
+                        else {
+                            $('#City').html('<option>Выберите город</option>');
+                        }
+                    });
+                });
+            </script>
+        }

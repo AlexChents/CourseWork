@@ -1,0 +1,61 @@
+﻿*{
+    padding:0;
+    margin:0;
+}
+html{
+    height:100%;
+}
+body {
+    padding-top: 50px;
+    height: 100%;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+.sender {
+    padding: 5px;
+    margin: 5px;
+    border: 2px solid red;
+    width: auto;
+}
+.recipient {
+    padding: 5px;
+    margin: 10px;
+    border: 2px solid red;
+    width: auto;
+}
+@font-face {
+    font-family: 'carbon2';
+    src: url('/fonts/Carbon2.otf') format('truetype');
+}
+.back-fon{
+    background-color: antiquewhite;
+    opacity: 0.9;
+}
+.panel-footer a{
+    color:darkgrey;
+}
+.panel-footer a:hover {
+    color: honeydew;
+    text-decoration-line:none;
+}
+.panel-footer a:active{
+    color: dodgerblue;
+}

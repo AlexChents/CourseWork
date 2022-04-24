@@ -1,0 +1,66 @@
+﻿@model CourseChentsov.Models.Package
+
+@{
+    Layout = null;
+}
+<div id="dataInfo">
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberDelivery)
+        </dt>
+        <dd>
+            @Model.NumberDelivery
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateSend)
+        </dt>
+        <dd>
+            @Model.DateSend.Date.ToShortDateString()
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateDelivery)
+        </dt>
+
+        <dd>
+            @Model.DateDelivery.Date.ToShortDateString()
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Адрес доставки")
+        </dt>
+        <dd>
+            <ul style="list-style:none; padding:0px">
+                <li>@Model.DepartmentSend.City.Name</li>
+                <li>@Model.DepartmentSendId</li>
+                <li>@Model.DepartmentSend.Adress</li>
+            </ul>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CountSeats)
+        </dt>
+        <dd>
+            @Model.CountSeats
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Weight)
+        </dt>
+        <dd>
+            @Model.Weight
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeliveryCost)
+        </dt>
+        <dd>
+            @Model.DeliveryCost
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StatusPackage.StatusName)
+        </dt>
+        <dd>
+            @Model.StatusPackage.StatusName
+        </dd>
+    </dl>
+</div>

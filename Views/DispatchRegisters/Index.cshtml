@@ -1,0 +1,146 @@
+﻿@model IEnumerable<CourseChentsov.Models.DispatchRegister>
+
+@{
+    ViewBag.Title = "Index";
+    List<double> weightAll = new List<double>();
+    List<int> countSeats = new List<int>();
+    List<double> costDelivery = new List<double>();
+    foreach (var item in Model)
+    {
+        weightAll.Add(item.Packages.Sum(p => p.Weight));
+        countSeats.Add(item.Packages.Sum(p => p.CountSeats));
+        costDelivery.Add(item.Packages.Sum(p => p.DeliveryCost));
+    }
+    int i = 0;
+}
+<body style="background-color:whitesmoke">
+</body>
+<h2>Реестры</h2>
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+<p>@Html.ActionLink("Список деклараций", "Index", "Packages")</p>
+<hr style="background-color:darkslateblue; height:1px" />
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.User.SenderName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateCreate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsPrint)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InDepartmentSend)
+        </th>
+        <th>
+            @Html.DisplayName("Количество мест")
+        </th>
+
+        <th>
+            @Html.DisplayName("Общий вес")
+        </th>
+
+        <th>
+            @Html.DisplayName("Стоимость доставки")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.User.SenderName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPrint)
+            </td>
+
+            <td>
+                @if (!item.IsPrint)
+                {
+                    @Html.CheckBoxFor(modelItem => item.InDepartmentSend, htmlAttributes: new { @id = $"item_InDepartmentSend{item.Id}", @disabled = "disabled" })
+                }
+
+                else
+                {
+                    if (item.InDepartmentSend)
+                    {
+                        @Html.CheckBoxFor(modelItem => item.InDepartmentSend, htmlAttributes: new { @id = $"item_InDepartmentSend{item.Id}", @disabled = "disabled" })
+                    }
+                    else
+                    {
+                        if (User.IsInRole("admin") || User.IsInRole("manager"))
+                        {
+                            @Html.CheckBoxFor(modelItem => item.InDepartmentSend, htmlAttributes: new { @id = $"item_InDepartmentSend{item.Id}" })
+                        }
+                    }
+                }
+            </td>
+
+            <td>
+                @countSeats[i]
+            </td>
+
+            <td>
+                @weightAll[i]
+            </td>
+
+            <td>
+                @costDelivery[i]
+            </td>
+
+            <td>
+                @Html.ActionLink("Подробно", "Details", new { id = item.Id }) <br />
+                @Html.ActionLink("Распечатать", "PrintRegister", "Print", new { id = item.Id }, null)
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, htmlAttributes: new { @class = "deleteRegister" })
+            </td>
+        </tr>
+        i++;
+    }
+</table>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type=checkbox]').each(function () {
+                $(this).change(function () {
+                    var idreg = (this.id).slice(21);
+                    $(this).attr('checked', 'checked');
+                    $(this).attr('disabled', 'disabled');
+                    $.ajax({
+                        url: '/DispatchRegisters/Edit?id=' + idreg,
+                        success: function () {}
+                    });
+                });
+            });
+        });
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".deleteRegister").click(function (e) {
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+        });
+    </script>
+}

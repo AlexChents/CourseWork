@@ -1,0 +1,66 @@
+﻿@model CourseChentsov.Models.DispatchRegister
+
+@{
+    Layout = null;
+}
+<body style="background-color:whitesmoke">
+</body>
+<div class='modal-content'>
+    <div class='modal-header'>
+        <button class='close' data-dismiss='modal' area-hidden='true'>X</button>
+        <h2>Удаление</h2>
+    </div>
+    <div class='modal-body'>
+
+        <h3>Вы уверены что хотите удалить реестр @Model.Id?</h3>
+        <p>
+            Удаление реестра приведет к удалению из этого реестра деклараций
+        </p>
+        <div>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.User.SenderName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.User.SenderName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.DateCreate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.DateCreate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsPrint)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.IsPrint)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.InDepartmentSend)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.InDepartmentSend)
+                </dd>
+
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Удалить" class="btn btn-default" /> 
+                </div>
+            }
+        </div>
+    </div>
+</div>

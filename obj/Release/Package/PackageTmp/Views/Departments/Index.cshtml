@@ -1,0 +1,163 @@
+﻿@using Microsoft.AspNet.Identity;
+@model IEnumerable<CourseChentsov.Models.Department>
+
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+<body style="background-color:whitesmoke">
+</body>
+
+<div style="display:inline-flex">
+    <img src="~/Content/Images/department.png" alt="depart" width="150"/>
+    @using (Html.BeginForm("Index", "Departments", FormMethod.Get))
+    {
+        <div class="form-group">
+            <h3>Область</h3>
+            @Html.DropDownList("Region", null, "Выберите область", htmlAttributes: new { @class = "form-control" })
+        </div>
+    }
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    @using (Html.BeginForm("Index", "Departments", FormMethod.Get))
+    {
+        <div class="form-group">
+            <h3>Город</h3>
+            @Html.DropDownList("City", null, "Выберите город", htmlAttributes: new { @class = "form-control" })
+        </div>
+    }
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    @using (Html.BeginForm("Index", "Departments", FormMethod.Post))
+    {
+        <div class="form-group">
+            <h3>Все отделения</h3>
+            <button id="all-department" type="button" class="form-control">Показать</button>
+        </div>
+    }
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    @if (User.IsInRole("admin"))
+    {
+
+        <div class="form-group">
+            <br />
+            <br />
+            <br />
+            @Html.ActionLink("Добавить отделение", "Create", null, htmlAttributes: new { @class = "creates" })
+        </div>
+        <p>@Html.ActionLink("Навигация по сайту", "Navigation", "Home")</p>
+    }
+</div>
+
+<hr style="background-color:blue; height:5px" />
+<table class="table" id="tableCity">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City.Name)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Adress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedule)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaxWeight)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City.Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Adress)
+            </td>
+            <td>
+                @if (item.StatusDepartmentId == 1)
+                {
+                    <ul style="padding: 0">
+                        <li style="list-style-type:none">@item.Schedule.WeekdaysWork @item.Schedule.WeekdaysTimeWork</li>
+                        <li style="list-style-type:none">@item.Schedule.SaturdayWork @item.Schedule.SaturdayTimeWork</li>
+                        <li style="list-style-type:none">@item.Schedule.SundayWork @item.Schedule.SundayTimeWork</li>
+                    </ul>
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.StatusDepartment.StatusName)
+                }
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxWeight)
+            </td>
+            @if (User.IsInRole("admin"))
+            {
+            <td>
+                @Html.ActionLink("Редактировать", "Edit", new { id = item.Id })
+            </td>
+            }
+        </tr>
+    }
+
+</table>
+<hr style="background-color:blue; height:5px" />
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#City').attr('disabled', true);
+            $('#Region').change(function () {
+                if ($('#Region').val() != "") {
+                    $('#City').attr('disabled', false);
+                    var region = decodeURI($('#Region').val());
+                    $.ajax({
+                        url: "/Departments/PartialIndexRegion?regionId=" + region,
+                        success: function (data) {
+                            $("#City").html(data);
+                            $('#City').html(function () {
+                                var cityName = decodeURI($('#City').val());
+                                $.ajax({
+                                    url: "/Departments/PartialIndexCity?cityId=" + cityName,
+                                    success: function (data) {
+                                        $("#tableCity").html(data);
+                                    }
+                                });
+                            });
+                        }
+                    });
+                }
+                else {
+                    $('#City').html('<option>Выберите город</option>');
+                    $('#City').attr('disabled', true);
+                }
+            });
+            $('#City').change(function () {
+                var cityName = decodeURI($('#City').val());
+                $.ajax({
+                    url: "/Departments/PartialIndexCity?cityId=" + cityName,
+                    success: function (data) {
+                        $("#tableCity").html(data);
+                    }
+                });
+            });
+            $('#all-department').click(function () {
+                $.ajax({
+                    url: "/Departments/Index",
+                    success: function (data) {
+                        $("body").html(data);
+                    }
+                });
+            });
+        });
+
+    </script>
+}

@@ -1,0 +1,44 @@
+﻿@model IList<CourseChentsov.Models.News>
+
+@{
+    Layout = null;
+    const int countNewsForPage = 7;
+    int page = ViewBag.Page;
+}
+
+<div id="currentPage" hidden="hidden">@page</div>
+@for (int i = Model.Count() - (page - 1) * countNewsForPage - 1; i >= Model.Count() - page * countNewsForPage; i--)
+{
+
+    <div>
+        <hr />
+        <dl style="width: 1000px">
+            <dd>
+                <span>@Model[i].Title</span>
+            </dd>
+
+            <dd>
+                <span>@Model[i].Content</span>
+            </dd>
+
+            <dd>
+                <span>@Model[i].DateCreate.ToString()</span>
+            </dd>
+            <dd>
+                @Html.ActionLink("Побробно", "Details", new { id = Model[i].Id })
+                @if (User.IsInRole("admin"))
+                {
+                    <span>|</span>
+                    @Html.ActionLink("Редактировать", "Edit", new { id = Model[i].Id })
+                    <span>|</span>
+                    @Html.ActionLink("Удалить", "Delete", new { id = Model[i].Id })
+                }
+            </dd>
+        </dl>
+        <hr />
+    </div>
+    if (i == 0)
+    {
+        break;
+    }
+}

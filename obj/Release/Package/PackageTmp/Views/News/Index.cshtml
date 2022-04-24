@@ -1,0 +1,106 @@
+﻿@using Microsoft.AspNet.Identity;
+@model IList<CourseChentsov.Models.News>
+
+@{
+    ViewBag.Title = "Index";
+    const int countNewsForPage = 7;
+    int countPages = 0;
+    int countAllNews = Model.Count();
+}
+<body style="background: url(/Content/Images/fon.jpg); background-size: 100%; color:lightyellow"></body>
+<h2>Новости</h2>
+
+@if (User.Identity.GetUserName() == "admin@gmail.com")
+{
+    <p>
+        @Html.ActionLink("Добавить новую", "Create")
+    </p>
+}
+<br />
+
+<div id="list_news" >
+    <div id="currentPage" hidden="hidden">1</div>
+    @for (int i = countAllNews - 1; i >= countAllNews - countNewsForPage; i--)
+    {
+        <hr />
+        <dl style="width: 1000px">
+            <dd>
+                <span>@Model[i].Title</span>
+            </dd>
+
+            <dd>
+                <span>@Model[i].Content</span>
+            </dd>
+
+            <dd>
+                <span>@Model[i].DateCreate.ToString()</span>
+            </dd>
+            <dd>
+                @Html.ActionLink("Побробно", "Details", new { id = Model[i].Id })
+                @if (User.IsInRole("admin"))
+                {
+                    <span>|</span>
+                    @Html.ActionLink("Редактировать", "Edit", new { id = Model[i].Id })
+                    <span>|</span>
+                    @Html.ActionLink("Удалить", "Delete", new { id = Model[i].Id })
+                }
+            </dd>
+        </dl>
+        <hr />
+    }
+</div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span>Предыдущая</span>
+                    </a>
+                </li>
+                @for (int j = 0; j < Model.Count(); j++)
+                {
+                    if (countAllNews > 0)
+                    {
+                        countAllNews -= countNewsForPage;
+                        countPages++;
+
+                        <li class="page-item"><a class="page-link" href="#"><span>@(j + 1)</span></a></li>
+                    }
+                }
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span>Следующая</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div id="allPages" hidden="hidden">@countPages</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.page-link span').each(function () {
+                $(this).click(function () {
+                    var page = decodeURI($(this).html());
+                    var currentPage = +($('#currentPage').html());
+                    var allPages = +($('#allPages').html());
+                    if (page == "Предыдущая" && currentPage != 1) {
+                        page = currentPage - 1;
+                    }
+                    if (page == "Следующая" && currentPage != allPages) {
+                        page = currentPage + 1;
+                    }
+                    if ((page == "Предыдущая" && currentPage == 1) || (page == "Следующая" && currentPage == allPages)) {
+                        return;
+                    }
+                    $.ajax({
+                        url: "/News/IndexPartial?page=" + page,
+                        success: function (data) {
+                           $('#list_news').html(data);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}

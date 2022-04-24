@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Service - служба доставки</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+    <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top" style="background-color:darkslateblue; padding:5px 0px 5px 0px ">
+        <!-- Логотип и мобильное меню -->
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle" style="font-family:'Underground(FONT BY LYAJKA)'">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Delivery Service", "Index", "Home", new { area = "" },
+                    new { @class = "navbar-brand", @style = "font-size:32px; " +
+                    "transform:scale(1,2); font-stretch: ultra-expanded; font-family: 'Underground(FONT BY LYAJKA)';"
+                    })
+            </div>
+            <br />
+            <div id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#" style="font-size:15px; font-weight:700">О компании <b class="caret"></b></a>
+                        <ul role="menu" class="dropdown-menu">
+                            <li>@Html.ActionLink("Главная", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Стоимость и срок доставки", "Index", "DistanceDeliveries")</li>
+                            <li>@Html.ActionLink("Калькулятор стоимости", "Index", "ViewCostDayDeliveries")</li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("Новости", "Index", "News", null, new { @style = "font-size:15px; font-weight:700" })</li>
+                    <li>@Html.ActionLink("Отделения", "Index", "Departments", null, new { @style = "font-size:15px; font-weight:700" })</li>
+                    <li>@Html.ActionLink("Отследить посылку", "Index", "ViewFindPackages", null, new { @style = "font-size:15px; font-weight:700" })</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </nav>
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="container body-content" style="min-height:420px">
+
+        @RenderBody()
+
+
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <footer class="panel-footer col-sm-12" style="background-color:darkslateblue; padding: 5px 0 0 0; display:inline-flex; color:darkgray; font-family:'Arial Narrow', Arial, sans-serif; font-size:18px;">
+        <div class="container" style="text-align:center">
+            <p>&copy; @DateTime.Now.Year – Delivery-Service</p>
+        </div>
+        <div class="container" style="text-align:center">
+            <p>Контакты: <br />
+            (067) 111-111-111 <br />
+            (050) 111-111-111</p>
+        </div>
+        <div class="container" style="text-align:center">
+            <p>@Html.ActionLink("Главная", "Index", "Home")<br/>
+            @Html.ActionLink("Стоимость и срок доставки", "Index", "DistanceDeliveries")<br/>
+            @Html.ActionLink("Калькулятор стоимости", "Index", "ViewCostDayDeliveries")</p>
+        </div>
+        <div class="container" style="text-align:center">
+            <p>@Html.ActionLink("Отделения", "Index", "Departments") <br />
+            @Html.ActionLink("Отследить посылку", "Index", "ViewFindPackages") <br />
+            @Html.ActionLink("Новости", "Index", "News")</p>
+        </div>
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    <script src='@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")'></script>
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

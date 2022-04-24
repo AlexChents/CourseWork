@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right", @style = "font-weight:700" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#" style="font-size:15px; font-weight:700">@User.Identity.GetUserName() <b class="caret"></b></a>
+                <ul role="menu" class="dropdown-menu">
+                    <li>@Html.ActionLink("Список деклараций", "Index", "Packages")</li>
+                    <li>@Html.ActionLink("Список реестров", "Index", "DispatchRegisters")</li>
+                    <li>@Html.ActionLink("Личные данные", "ContactData", "Account")</li>
+                    @if (User.IsInRole("admin") || User.IsInRole("manager"))
+                    {
+                        <li>@Html.ActionLink("Исходящие посылки", "ViewPackageToSend", "Packages")</li>
+                        <li>@Html.ActionLink("Входящие посылки", "ViewPackageToRecepient", "Packages")</li>
+                    }
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li>@Html.ActionLink("Навигация по сайту", "Navigation", "Home")</li>
+                    }
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a></li>
+                </ul>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+
+            <a data-toggle="dropdown" class="dropdown-toggle" href="#" style="font-size:15px; font-weight:700">Личный кабинет <b class="caret"></b></a>
+            <ul role="menu" class="dropdown-menu">
+                <li>@Html.ActionLink("Регистрация", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @style = "font-weight:700" })</li>
+                <li>@Html.ActionLink("Вход", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @style = "font-weight:700" })</li>
+            </ul>
+        </li>
+    </ul>
+}
+

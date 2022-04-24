@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Confirm";
+}
+<body style="background-color:whitesmoke">
+</body>
+<h3>Сообщение</h3>
+<p>@ViewBag.Message</p>
+<br />
+@if (!ViewBag.ConfirmedEmail)
+{
+    <input type="submit" name="submit" value="Выслать инструкцию еще раз!" id="btn_send" class="btn-default" style="padding:9px; color:white; text-decoration-style:double; background-color:darkslateblue" />
+}
+else
+{
+    @Html.ActionLink("Перейти в личный кабинет", "Index", "Packages")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('#btn_send').click(function () {
+            $.post({
+                url: "/Account/SendMail?userEmail=@User.Identity.Name",
+                success: function () {
+                    window.location.reload();
+                }
+            });
+        });
+    });
+    </script>
+}

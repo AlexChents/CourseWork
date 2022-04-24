@@ -1,0 +1,8 @@
+﻿@model IEnumerable<CourseChentsov.Models.Department>
+@{
+    Layout = null;
+}
+@foreach (var item in Model)
+{
+    <option>@item.Id, @item.Adress, (отделение до @item.MaxWeight кг.)</option>
+}
